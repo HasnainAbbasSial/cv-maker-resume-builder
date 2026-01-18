@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { useResume } from '../../context/ResumeContext';
-import { Upload, X } from 'lucide-react';
+import { Upload, X, Check } from 'lucide-react';
 import Cropper from 'react-easy-crop';
 import { getCroppedImg } from '../../utils/cropImage';
 
@@ -111,16 +111,31 @@ const ImageUpload = () => {
             </div>
 
             {showCropper && image && (
-                <div className="fixed inset-0 z-[99999] bg-black/90 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
-                    <div className="bg-white rounded-xl w-full max-w-lg overflow-hidden flex flex-col shadow-2xl my-auto">
-                        <div className="flex justify-between items-center p-4 border-b">
-                            <h3 className="text-lg font-bold text-gray-800">Crop Profile Photo</h3>
-                            <button onClick={cancelCrop} className="text-gray-400 hover:text-gray-600 transition-colors">
-                                <X size={24} />
-                            </button>
+                <div
+                    onClick={cancelCrop}
+                    className="fixed inset-0 z-[99999] bg-black/95 flex items-center justify-center p-2 sm:p-4 overflow-y-auto cursor-pointer"
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="bg-white rounded-2xl w-full max-w-lg overflow-hidden flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.5)] my-auto cursor-default"
+                    >
+                        <div className="flex justify-between items-center p-4 border-b bg-gray-50">
+                            <h3 className="text-xl font-bold text-gray-800">Adjust Photo</h3>
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={handleDone}
+                                    disabled={isprocessing}
+                                    className="bg-[var(--primary)] text-white px-4 py-1.5 rounded-lg font-bold text-sm flex items-center gap-1 shadow-sm hover:scale-105 transition-transform"
+                                >
+                                    <Check size={16} /> Apply
+                                </button>
+                                <button onClick={cancelCrop} className="text-gray-400 hover:text-gray-600 transition-colors p-1">
+                                    <X size={24} />
+                                </button>
+                            </div>
                         </div>
 
-                        <div className="relative h-[300px] sm:h-[400px] w-full bg-gray-900">
+                        <div className="relative h-[300px] sm:h-[450px] w-full bg-black">
                             <Cropper
                                 image={image}
                                 crop={crop}
@@ -134,9 +149,12 @@ const ImageUpload = () => {
                             />
                         </div>
 
-                        <div className="p-6 space-y-4">
-                            <div className="flex items-center gap-4">
-                                <span className="text-sm font-medium text-gray-600 shrink-0">Zoom</span>
+                        <div className="p-6 space-y-5 bg-white">
+                            <div className="flex flex-col gap-3">
+                                <div className="flex justify-between text-sm font-bold text-gray-700">
+                                    <span>Zoom & Focus</span>
+                                    <span>{Math.round(zoom * 100)}%</span>
+                                </div>
                                 <input
                                     type="range"
                                     value={zoom}
@@ -145,29 +163,31 @@ const ImageUpload = () => {
                                     step={0.1}
                                     aria-labelledby="Zoom"
                                     onChange={(e) => setZoom(parseFloat(e.target.value))}
-                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[var(--primary)]"
+                                    className="w-full h-3 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[var(--primary)]"
                                 />
                             </div>
 
-                            <div className="flex justify-end gap-3 pt-2">
+                            <div className="flex items-center gap-4 pt-2">
                                 <button
                                     onClick={cancelCrop}
-                                    className="px-6 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                                    className="flex-1 px-4 py-3 text-sm font-bold text-gray-500 hover:bg-gray-50 rounded-xl border border-gray-100 transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleDone}
                                     disabled={isprocessing}
-                                    className="px-8 py-2.5 text-sm font-bold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] rounded-lg transition-all shadow-md active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
+                                    className="flex-[2] px-8 py-4 text-base font-black bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] rounded-xl transition-all shadow-xl active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                                 >
                                     {isprocessing ? (
                                         <>
-                                            <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
-                                            Saving...
+                                            <span className="animate-spin h-5 w-5 border-3 border-white border-t-transparent rounded-full"></span>
+                                            Processing...
                                         </>
                                     ) : (
-                                        'Save & Apply'
+                                        <>
+                                            Save Photo
+                                        </>
                                     )}
                                 </button>
                             </div>
@@ -176,6 +196,7 @@ const ImageUpload = () => {
                 </div>
             )}
         </div>
+
 
     );
 };
