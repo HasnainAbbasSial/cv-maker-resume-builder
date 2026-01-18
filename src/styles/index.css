@@ -135,23 +135,30 @@ select:focus {
         background: white;
     }
 
-    .grid-layout {
-        display: block;
+    header,
+    .editor-section,
+    [class*="ColorPicker"],
+    [class*="TemplateSelector"] {
+        display: none !important;
     }
 
-    .editor-section {
-        display: none;
+    .grid-layout {
+        display: block;
+        height: auto;
     }
 
     .preview-section {
         padding: 0;
+        margin: 0;
         overflow: visible;
         background: white;
+        display: block;
     }
 
     .resume-page {
         box-shadow: none;
-        margin: 0;
-        width: 100%;
+        margin: 0 auto;
+        width: 210mm;
+        border: none;
     }
 }
