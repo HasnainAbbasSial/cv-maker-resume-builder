@@ -1,6 +1,7 @@
 export interface SocialLink {
     id: string;
-    platform: string;
+    network: string; // e.g., LinkedIn, Twitter, Website
+    username: string;
     url: string;
 }
 
@@ -27,25 +28,22 @@ export interface Education {
 export interface Skill {
     id: string;
     name: string;
-    level: number; // 0-5 or 0-100
+    level: number; // 0-5
 }
 
-export interface CustomSectionItem {
+export interface Language {
     id: string;
     name: string;
-    city: string;
-    startDate: string;
-    endDate: string;
-    description: string;
+    level: string; // e.g., Native, Fluent
 }
 
-export interface CustomSection {
-    id: string;
-    title: string;
-    items: CustomSectionItem[];
-}
+export type TemplateId = 'stockholm' | 'new-york' | 'london' | 'dublin';
 
 export interface ResumeData {
+    meta: {
+        templateId: TemplateId;
+        primaryColor: string; // Hex code
+    };
     personalDetails: {
         jobTitle: string;
         photoUrl?: string;
@@ -67,5 +65,6 @@ export interface ResumeData {
     education: Education[];
     socialLinks: SocialLink[];
     skills: Skill[];
-    customSections: CustomSection[];
+    languages: Language[];
+    hobbies: string; // Simple text area
 }

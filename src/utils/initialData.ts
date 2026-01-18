@@ -1,6 +1,10 @@
 import type { ResumeData } from '../types';
 
 export const initialResumeData: ResumeData = {
+    meta: {
+        templateId: 'stockholm',
+        primaryColor: '#1a91f0',
+    },
     personalDetails: {
         jobTitle: '',
         firstName: '',
@@ -21,5 +25,6 @@ export const initialResumeData: ResumeData = {
     education: [],
     socialLinks: [],
     skills: [],
-    customSections: [],
+    languages: [],
+    hobbies: '',
 };

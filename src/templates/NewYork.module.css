@@ -1,0 +1,160 @@
+.page {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    line-height: 1.5;
+}
+
+.sidebar {
+    width: 32%;
+    background-color: #f4f4f4;
+    /* Light grey sidebar */
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.main {
+    width: 68%;
+    padding: 40px 30px;
+}
+
+/* Sidebar Elements */
+.photoPlaceholder {
+    width: 120px;
+    height: 120px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sidebarSection {
+    margin-bottom: 20px;
+}
+
+.sidebarTitle {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.contactItem {
+    font-size: 13px;
+    margin-bottom: 8px;
+    word-break: break-all;
+}
+
+.skillItem {
+    margin-bottom: 8px;
+}
+
+.skillName {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.skillBar {
+    height: 4px;
+    background: #ddd;
+    border-radius: 2px;
+}
+
+.skillLevel {
+    height: 100%;
+    background: #333;
+    border-radius: 2px;
+}
+
+/* Main Content Elements */
+.header {
+    margin-bottom: 30px;
+}
+
+.name {
+    font-size: 36px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.1;
+    color: var(--primary-color, #1a91f0);
+}
+
+.jobTitle {
+    font-size: 16px;
+    margin-top: 5px;
+    color: #555;
+    font-weight: 500;
+}
+
+.summary {
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: #444;
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+.sectionTitle {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #333;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sectionTitle::after {
+    content: '';
+    flex-grow: 1;
+    height: 2px;
+    background: #eee;
+}
+
+.item {
+    margin-bottom: 20px;
+}
+
+.itemHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.itemTitle {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.itemMeta {
+    font-size: 13px;
+    color: #666;
+}
+
+.date {
+    font-weight: 600;
+}
+
+.description {
+    font-size: 13px;
+    color: #444;
+    white-space: pre-line;
+}
