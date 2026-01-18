@@ -4,6 +4,7 @@ import { useResume } from '../../context/ResumeContext';
 import { Upload, X, Check } from 'lucide-react';
 import Cropper from 'react-easy-crop';
 import { getCroppedImg } from '../../utils/cropImage';
+import styles from './ImageUpload.module.css';
 
 const ImageUpload = () => {
     const { resumeData, updatePersonalDetails } = useResume();
@@ -67,23 +68,16 @@ const ImageUpload = () => {
     };
 
     const modalContent = showCropper && image && (
-        <div
-            onClick={cancelCrop}
-            className="fixed inset-0 z-[1000000] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
-            style={{ width: '100vw', height: '100vh' }}
-        >
-            <div
-                onClick={(e) => e.stopPropagation()}
-                className="bg-white rounded-2xl w-full max-w-md overflow-hidden flex flex-col shadow-2xl cursor-default animate-in fade-in zoom-in duration-200"
-            >
-                <div className="flex justify-between items-center p-5 border-b bg-gray-50/50">
-                    <h3 className="text-xl font-black text-gray-800 tracking-tight">Adjust Photo</h3>
-                    <button onClick={cancelCrop} className="text-gray-400 hover:text-gray-600 transition-colors p-1">
+        <div className={styles.modalOverlay} onClick={cancelCrop}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                <div className={styles.modalHeader}>
+                    <h3>Adjust Photo</h3>
+                    <button onClick={cancelCrop} className={styles.closeButton}>
                         <X size={24} />
                     </button>
                 </div>
 
-                <div className="relative h-[300px] sm:h-[350px] w-full bg-slate-900 shadow-inner">
+                <div className={styles.cropperContainer}>
                     <Cropper
                         image={image}
                         crop={crop}
@@ -97,9 +91,9 @@ const ImageUpload = () => {
                     />
                 </div>
 
-                <div className="p-6 space-y-6 bg-white">
-                    <div className="flex flex-col gap-4">
-                        <div className="flex justify-between text-xs font-black uppercase tracking-widest text-gray-500">
+                <div className={styles.modalBody}>
+                    <div className={styles.zoomControl}>
+                        <div className={styles.zoomLabel}>
                             <span>Zoom & Position</span>
                             <span>{Math.round(zoom * 100)}%</span>
                         </div>
@@ -111,25 +105,22 @@ const ImageUpload = () => {
                             step={0.1}
                             aria-labelledby="Zoom"
                             onChange={(e) => setZoom(parseFloat(e.target.value))}
-                            className="w-full h-2 bg-gray-100 rounded-full appearance-none cursor-pointer accent-[var(--primary)]"
+                            className={styles.rangeInput}
                         />
                     </div>
 
-                    <div className="flex items-center gap-3 pt-2">
-                        <button
-                            onClick={cancelCrop}
-                            className="flex-1 px-4 py-3 text-sm font-bold text-gray-500 hover:bg-gray-50 rounded-xl transition-all active:scale-95"
-                        >
+                    <div className={styles.modalFooter}>
+                        <button onClick={cancelCrop} className={styles.cancelBtn}>
                             Cancel
                         </button>
                         <button
                             onClick={handleDone}
                             disabled={isprocessing}
-                            className="flex-[2] px-8 py-4 text-base font-bold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] rounded-xl transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className={styles.saveBtn}
                         >
                             {isprocessing ? (
                                 <>
-                                    <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
+                                    <div className={styles.spinner}></div>
                                     Wait...
                                 </>
                             ) : (
@@ -145,38 +136,37 @@ const ImageUpload = () => {
     );
 
     return (
-        <div className="flex flex-col gap-4 mb-6 relative">
-            <div className="flex items-center gap-4">
-                <div className="w-20 h-20 rounded-full bg-gray-100 border border-dashed border-gray-300 flex items-center justify-center overflow-hidden shrink-0">
+        <div style={{ marginBottom: '1.5rem', position: 'relative' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div className={styles.imagePreview}>
                     {resumeData.personalDetails.photoUrl ? (
                         <img
                             src={resumeData.personalDetails.photoUrl}
                             alt="Profile"
-                            className="w-full h-full object-cover"
                         />
                     ) : (
-                        <Upload size={24} className="text-gray-400" />
+                        <Upload size={24} style={{ color: '#94a3b8' }} />
                     )}
                 </div>
 
-                <div className="flex flex-col gap-2">
-                    <div className="flex gap-2">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <button
                             onClick={() => fileInputRef.current?.click()}
-                            className="text-sm font-medium text-[var(--primary)] hover:text-[var(--primary-hover)] flex items-center gap-1"
+                            className={styles.uploadTrigger}
                         >
                             <Upload size={14} /> {resumeData.personalDetails.photoUrl ? 'Change Photo' : 'Upload Photo'}
                         </button>
                         {resumeData.personalDetails.photoUrl && (
                             <button
                                 onClick={removeImage}
-                                className="text-sm font-medium text-[var(--error)] flex items-center gap-1"
+                                className={styles.removeBtn}
                             >
                                 <X size={14} /> Remove
                             </button>
                         )}
                     </div>
-                    <p className="text-xs text-[var(--text-secondary)]">
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                         JPG or PNG. Max 2MB.
                     </p>
                     <input
@@ -184,7 +174,7 @@ const ImageUpload = () => {
                         ref={fileInputRef}
                         onChange={handleImageUpload}
                         accept="image/png, image/jpeg"
-                        className="hidden"
+                        style={{ display: 'none' }}
                     />
                 </div>
             </div>
