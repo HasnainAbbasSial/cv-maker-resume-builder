@@ -10,7 +10,7 @@ const Header = () => {
     };
 
     return (
-        <header className="bg-white border-b border-[var(--border-color)] px-8 py-4 flex justify-between items-center sticky top-0 z-50">
+        <header className="no-print bg-white border-b border-[var(--border-color)] px-8 py-4 flex justify-between items-center sticky top-0 z-50">
             <div className="flex items-center gap-2">
                 <div className="bg-[var(--primary)] text-white p-2 rounded">
                     <FileText size={24} />

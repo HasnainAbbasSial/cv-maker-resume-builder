@@ -132,10 +132,13 @@ select:focus {
 
 @media print {
     body {
-        background: white;
+        background: white !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
     }
 
-    header,
+    .no-print,
     .editor-section,
     [class*="ColorPicker"],
     [class*="TemplateSelector"] {
@@ -143,22 +146,34 @@ select:focus {
     }
 
     .grid-layout {
-        display: block;
-        height: auto;
+        display: block !important;
+        height: auto !important;
     }
 
     .preview-section {
-        padding: 0;
-        margin: 0;
-        overflow: visible;
-        background: white;
-        display: block;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        background: white !important;
+        display: block !important;
+        width: 100% !important;
     }
 
     .resume-page {
-        box-shadow: none;
-        margin: 0 auto;
-        width: 210mm;
-        border: none;
+        box-shadow: none !important;
+        margin: 0 auto !important;
+        width: 210mm !important;
+        border: none !important;
+        transform: scale(1) !important;
+        background: white !important;
+    }
+
+    /* Ensure name and titles aren't forced to black by browser */
+    h1,
+    h2,
+    h3,
+    div {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 }
