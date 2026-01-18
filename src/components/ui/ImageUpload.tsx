@@ -13,6 +13,7 @@ const ImageUpload = () => {
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [showCropper, setShowCropper] = useState(false);
+    const [isprocessing, setIsProcessing] = useState(false);
 
     const onCropComplete = useCallback((_extended: any, croppedAreaPixels: any) => {
         setCroppedAreaPixels(croppedAreaPixels);
@@ -36,16 +37,27 @@ const ImageUpload = () => {
     };
 
     const handleDone = async () => {
+        if (!image || !croppedAreaPixels) return;
+
+        setIsProcessing(true);
         try {
-            if (image && croppedAreaPixels) {
-                const croppedImage = await getCroppedImg(image, croppedAreaPixels);
-                updatePersonalDetails('photoUrl', croppedImage);
-                setShowCropper(false);
-                setImage(null);
-            }
+            const croppedImage = await getCroppedImg(image, croppedAreaPixels);
+            updatePersonalDetails('photoUrl', croppedImage);
+            setShowCropper(false);
+            setImage(null);
+            setZoom(1);
         } catch (e) {
-            console.error(e);
+            console.error("Error cropping image:", e);
+            alert("Failed to crop image. Please try another one.");
+        } finally {
+            setIsProcessing(false);
         }
+    };
+
+    const cancelCrop = () => {
+        setShowCropper(false);
+        setImage(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
     const removeImage = () => {
@@ -99,16 +111,16 @@ const ImageUpload = () => {
             </div>
 
             {showCropper && image && (
-                <div className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-lg w-full max-w-lg p-6 flex flex-col gap-4">
-                        <div className="flex justify-between items-center bg-white">
-                            <h3 className="text-lg font-bold">Edit Photo</h3>
-                            <button onClick={() => setShowCropper(false)} className="text-gray-500 hover:text-gray-700">
-                                <X size={20} />
+                <div className="fixed inset-0 z-[99999] bg-black/90 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+                    <div className="bg-white rounded-xl w-full max-w-lg overflow-hidden flex flex-col shadow-2xl my-auto">
+                        <div className="flex justify-between items-center p-4 border-b">
+                            <h3 className="text-lg font-bold text-gray-800">Crop Profile Photo</h3>
+                            <button onClick={cancelCrop} className="text-gray-400 hover:text-gray-600 transition-colors">
+                                <X size={24} />
                             </button>
                         </div>
 
-                        <div className="relative h-80 w-full bg-gray-200 overflow-hidden rounded shadow-inner">
+                        <div className="relative h-[300px] sm:h-[400px] w-full bg-gray-900">
                             <Cropper
                                 image={image}
                                 crop={crop}
@@ -118,41 +130,53 @@ const ImageUpload = () => {
                                 onCropComplete={onCropComplete}
                                 onZoomChange={setZoom}
                                 cropShape="round"
+                                showGrid={false}
                             />
                         </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-medium text-gray-700">Zoom</label>
-                            <input
-                                type="range"
-                                value={zoom}
-                                min={1}
-                                max={3}
-                                step={0.1}
-                                aria-labelledby="Zoom"
-                                onChange={(e) => setZoom(parseFloat(e.target.value))}
-                                className="w-full"
-                            />
-                        </div>
+                        <div className="p-6 space-y-4">
+                            <div className="flex items-center gap-4">
+                                <span className="text-sm font-medium text-gray-600 shrink-0">Zoom</span>
+                                <input
+                                    type="range"
+                                    value={zoom}
+                                    min={1}
+                                    max={3}
+                                    step={0.1}
+                                    aria-labelledby="Zoom"
+                                    onChange={(e) => setZoom(parseFloat(e.target.value))}
+                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[var(--primary)]"
+                                />
+                            </div>
 
-                        <div className="flex justify-end gap-2 mt-2">
-                            <button
-                                onClick={() => setShowCropper(false)}
-                                className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleDone}
-                                className="px-6 py-2 text-sm font-medium bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] rounded"
-                            >
-                                Save Photo
-                            </button>
+                            <div className="flex justify-end gap-3 pt-2">
+                                <button
+                                    onClick={cancelCrop}
+                                    className="px-6 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleDone}
+                                    disabled={isprocessing}
+                                    className="px-8 py-2.5 text-sm font-bold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] rounded-lg transition-all shadow-md active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
+                                >
+                                    {isprocessing ? (
+                                        <>
+                                            <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                                            Saving...
+                                        </>
+                                    ) : (
+                                        'Save & Apply'
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
         </div>
+
     );
 };
 
