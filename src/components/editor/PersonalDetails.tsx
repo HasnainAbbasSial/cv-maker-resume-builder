@@ -2,6 +2,8 @@ import React from 'react';
 import { useResume } from '../../context/ResumeContext';
 import FormField from '../ui/FormField';
 
+import ImageUpload from '../ui/ImageUpload';
+
 const PersonalDetails = () => {
     const { resumeData, updatePersonalDetails } = useResume();
     const { personalDetails } = resumeData;
@@ -15,6 +17,7 @@ const PersonalDetails = () => {
     return (
         <div className="mb-8">
             <h2 className="text-xl font-bold mb-4 text-[var(--text-main)]">Personal Details</h2>
+            <ImageUpload />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                     label="Job Title"

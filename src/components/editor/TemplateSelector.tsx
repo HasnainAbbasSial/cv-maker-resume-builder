@@ -10,6 +10,8 @@ const templates: { id: TemplateId; name: string; color: string }[] = [
     { id: 'dublin', name: 'Dublin', color: '#10b981' }, // Placeholder
 ];
 
+import ColorPicker from './ColorPicker';
+
 const TemplateSelector = () => {
     const { resumeData, setResumeData } = useResume();
 
@@ -27,7 +29,7 @@ const TemplateSelector = () => {
                 <h2 className="text-xl font-bold text-[var(--text-main)]">Templates</h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 {templates.map(t => (
                     <button
                         key={t.id}
@@ -58,6 +60,8 @@ const TemplateSelector = () => {
                     </button>
                 ))}
             </div>
+
+            <ColorPicker />
         </div>
     );
 };
