@@ -40,10 +40,9 @@ const Dublin: React.FC<DublinProps> = ({ data }) => {
                             {data.employmentHistory.map(item => (
                                 <div key={item.id} className={styles.item}>
                                     <div className={styles.itemHeader}>
-                                        <div className={styles.itemTitle}>{item.jobTitle}</div>
-                                        <div className={styles.itemSubtitle}>{item.employer}, {item.city}</div>
+                                        <div className={styles.itemTitle}>{item.jobTitle} at {item.employer}</div>
+                                        <span className={styles.date}>{item.startDate} — {item.endDate || 'Present'}</span>
                                     </div>
-                                    <span className={styles.date}>{item.startDate} — {item.endDate || 'Present'}</span>
                                     <p className={styles.description}>{item.description}</p>
                                 </div>
                             ))}
@@ -58,22 +57,70 @@ const Dublin: React.FC<DublinProps> = ({ data }) => {
                                     <div className={styles.itemHeader}>
                                         <div className={styles.itemTitle}>{item.school}</div>
                                         <div className={styles.itemSubtitle}>{item.degree}</div>
+                                        <span className={styles.date}>{item.startDate} — {item.endDate || 'Present'}</span>
                                     </div>
-                                    <span className={styles.date}>{item.startDate} — {item.endDate || 'Present'}</span>
                                 </div>
                             ))}
                         </div>
                     )}
+
+                    {data.extraCurricularActivities.length > 0 && (
+                        <div className={styles.section}>
+                            <h2 className={styles.sectionTitle}>Extra-curricular Activities</h2>
+                            {data.extraCurricularActivities.map(item => (
+                                <div key={item.id} className={styles.item}>
+                                    <div className={styles.itemHeader}>
+                                        <div className={styles.itemTitle}>{item.title} at {item.employer}</div>
+                                        <span className={styles.date}>{item.startDate} — {item.endDate || 'Present'}</span>
+                                    </div>
+                                    <p className={styles.description}>{item.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {data.courses.length > 0 && (
+                        <div className={styles.section}>
+                            <h2 className={styles.sectionTitle}>Courses</h2>
+                            {data.courses.map(item => (
+                                <div key={item.id} className={styles.item}>
+                                    <div className={styles.itemHeader}>
+                                        <div className={styles.itemTitle}>{item.course}</div>
+                                        <div className={styles.itemSubtitle}>{item.institution}</div>
+                                        <span className={styles.date}>{item.startDate} — {item.endDate}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {data.customSections.map(section => (
+                        <div key={section.id} className={styles.section}>
+                            <h2 className={styles.sectionTitle}>{section.title}</h2>
+                            {section.items.map(item => (
+                                <div key={item.id} className={styles.item}>
+                                    <div className={styles.itemHeader}>
+                                        <div className={styles.itemTitle}>{item.title} {item.city && `, ${item.city}`}</div>
+                                        {(item.startDate || item.endDate) && (
+                                            <span className={styles.date}>{item.startDate} — {item.endDate || 'Present'}</span>
+                                        )}
+                                    </div>
+                                    <p className={styles.description}>{item.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
                 </div>
 
                 <div className={styles.rightColumn}>
                     <div className={styles.section}>
                         <h2 className={styles.sectionTitle}>Details</h2>
                         <div className={styles.contactInfo} style={{ flexDirection: 'column', gap: '5px' }}>
-                            <span>{personalDetails.address}</span>
-                            <span>{personalDetails.city}, {personalDetails.postalCode}</span>
-                            <span>{personalDetails.country}</span>
-                            <span>{personalDetails.placeOfBirth}</span>
+                            {personalDetails.address && <span>{personalDetails.address}</span>}
+                            {personalDetails.city && <span>{personalDetails.city}, {personalDetails.postalCode}</span>}
+                            {personalDetails.country && <span>{personalDetails.country}</span>}
+                            {personalDetails.nationality && <span>Nationality: {personalDetails.nationality}</span>}
+                            {personalDetails.dateOfBirth && <span>Born: {personalDetails.dateOfBirth}</span>}
                         </div>
                     </div>
 
@@ -82,7 +129,7 @@ const Dublin: React.FC<DublinProps> = ({ data }) => {
                             <h2 className={styles.sectionTitle}>Links</h2>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '13px' }}>
                                 {data.socialLinks.map(link => (
-                                    <a key={link.id} href={link.url} style={{ color: '#10b981', textDecoration: 'none' }}>{link.network}</a>
+                                    <a key={link.id} href={link.url} style={{ color: meta.primaryColor, textDecoration: 'none' }}>{link.network}</a>
                                 ))}
                             </div>
                         </div>
@@ -101,6 +148,25 @@ const Dublin: React.FC<DublinProps> = ({ data }) => {
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                    )}
+
+                    {data.languages.length > 0 && (
+                        <div className={styles.section}>
+                            <h2 className={styles.sectionTitle}>Languages</h2>
+                            {data.languages.map(lang => (
+                                <div key={lang.id} className={styles.skillItem}>
+                                    <div className={styles.skillName}>{lang.name}</div>
+                                    <div className={styles.itemSubtitle}>{lang.level}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {data.hobbies && (
+                        <div className={styles.section}>
+                            <h2 className={styles.sectionTitle}>Hobbies</h2>
+                            <p className={styles.description}>{data.hobbies}</p>
                         </div>
                     )}
                 </div>

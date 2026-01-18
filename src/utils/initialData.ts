@@ -19,6 +19,7 @@ export const initialResumeData: ResumeData = {
         nationality: '',
         placeOfBirth: '',
         dateOfBirth: '',
+        linkedinUrl: '',
     },
     professionalSummary: '',
     employmentHistory: [],
@@ -27,4 +28,7 @@ export const initialResumeData: ResumeData = {
     skills: [],
     languages: [],
     hobbies: '',
+    courses: [],
+    extraCurricularActivities: [],
+    customSections: [],
 };

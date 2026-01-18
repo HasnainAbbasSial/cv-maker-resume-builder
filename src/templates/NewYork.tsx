@@ -27,6 +27,8 @@ const NewYork: React.FC<NewYorkProps> = ({ data }) => {
                     <div className={styles.contactItem}>{personalDetails.city}, {personalDetails.postalCode}</div>
                     <div className={styles.contactItem}>{personalDetails.phone}</div>
                     <div className={styles.contactItem}>{personalDetails.email}</div>
+                    {personalDetails.nationality && <div className={styles.contactItem}>Nationality: {personalDetails.nationality}</div>}
+                    {personalDetails.drivingLicense && <div className={styles.contactItem}>Driving License: {personalDetails.drivingLicense}</div>}
                 </div>
 
                 {/* Links */}
@@ -38,6 +40,19 @@ const NewYork: React.FC<NewYorkProps> = ({ data }) => {
                                 <a href={link.url} target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
                                     {link.network}
                                 </a>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {/* Languages */}
+                {data.languages.length > 0 && (
+                    <div className={styles.sidebarSection}>
+                        <h3 className={styles.sidebarTitle}>Languages</h3>
+                        {data.languages.map(lang => (
+                            <div key={lang.id} className={styles.skillItem}>
+                                <div className={styles.skillName}>{lang.name}</div>
+                                <div className={styles.itemMeta} style={{ fontSize: '11px' }}>{lang.level}</div>
                             </div>
                         ))}
                     </div>
@@ -55,6 +70,14 @@ const NewYork: React.FC<NewYorkProps> = ({ data }) => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                )}
+
+                {/* Hobbies */}
+                {data.hobbies && (
+                    <div className={styles.sidebarSection}>
+                        <h3 className={styles.sidebarTitle}>Hobbies</h3>
+                        <div className={styles.contactItem}>{data.hobbies}</div>
                     </div>
                 )}
             </aside>
@@ -104,11 +127,64 @@ const NewYork: React.FC<NewYorkProps> = ({ data }) => {
                                         <span className={styles.date}>{item.startDate} — {item.endDate || 'Present'}</span>
                                     </div>
                                 </div>
+                            </div>
+                        ))}
+                    </section>
+                )}
+
+                {data.courses.length > 0 && (
+                    <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Courses</h2>
+                        {data.courses.map(item => (
+                            <div key={item.id} className={styles.item} style={{ marginBottom: '10px' }}>
+                                <div className={styles.itemHeader}>
+                                    <div className={styles.itemTitle}>{item.course}, {item.institution}</div>
+                                    <div className={styles.itemMeta}>{item.startDate} — {item.endDate}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </section>
+                )}
+
+                {data.extraCurricularActivities.length > 0 && (
+                    <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Extra-curricular Activities</h2>
+                        {data.extraCurricularActivities.map(item => (
+                            <div key={item.id} className={styles.item}>
+                                <div className={styles.itemHeader}>
+                                    <div>
+                                        <div className={styles.itemTitle}>{item.title}, {item.employer}, {item.city}</div>
+                                    </div>
+                                    <div className={styles.itemMeta}>
+                                        <span className={styles.date}>{item.startDate} — {item.endDate || 'Present'}</span>
+                                    </div>
+                                </div>
                                 <p className={styles.description}>{item.description}</p>
                             </div>
                         ))}
                     </section>
                 )}
+
+                {data.customSections.map(section => (
+                    <section key={section.id} className={styles.section}>
+                        <h2 className={styles.sectionTitle}>{section.title}</h2>
+                        {section.items.map(item => (
+                            <div key={item.id} className={styles.item}>
+                                <div className={styles.itemHeader}>
+                                    <div>
+                                        <div className={styles.itemTitle}>{item.title} {item.city && `, ${item.city}`}</div>
+                                    </div>
+                                    <div className={styles.itemMeta}>
+                                        {(item.startDate || item.endDate) && (
+                                            <span className={styles.date}>{item.startDate} — {item.endDate || 'Present'}</span>
+                                        )}
+                                    </div>
+                                </div>
+                                <p className={styles.description}>{item.description}</p>
+                            </div>
+                        ))}
+                    </section>
+                ))}
             </main>
         </div>
     );

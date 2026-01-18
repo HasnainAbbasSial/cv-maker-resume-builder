@@ -37,6 +37,37 @@ export interface Language {
     level: string; // e.g., Native, Fluent
 }
 
+export interface Course {
+    id: string;
+    course: string;
+    institution: string;
+    startDate: string;
+    endDate: string;
+}
+
+export interface ExtraCurricularActivity {
+    id: string;
+    title: string;
+    employer: string;
+    startDate: string;
+    endDate: string;
+    city: string;
+    description: string;
+}
+
+export interface CustomSection {
+    id: string;
+    title: string;
+    items: {
+        id: string;
+        title: string;
+        city: string;
+        startDate: string;
+        endDate: string;
+        description: string;
+    }[];
+}
+
 export type TemplateId = 'stockholm' | 'new-york' | 'london' | 'dublin';
 
 export interface ResumeData {
@@ -59,6 +90,7 @@ export interface ResumeData {
         nationality: string;
         placeOfBirth: string;
         dateOfBirth: string;
+        linkedinUrl: string;
     };
     professionalSummary: string;
     employmentHistory: EmploymentHistory[];
@@ -66,5 +98,8 @@ export interface ResumeData {
     socialLinks: SocialLink[];
     skills: Skill[];
     languages: Language[];
-    hobbies: string; // Simple text area
+    hobbies: string;
+    courses: Course[];
+    extraCurricularActivities: ExtraCurricularActivity[];
+    customSections: CustomSection[];
 }
